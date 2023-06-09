@@ -9,8 +9,6 @@ This document will guide you through passwordless SSH to printer. Replace the fo
 ssh printer
 ```
 
-<br>
-
 ## SSH Alias Setup
 
 1. Open the SSH configuration file on your local machine with the command:
@@ -28,8 +26,6 @@ ssh printer
      IdentityFile ~/.ssh/id_rsa_printer
      IdentitiesOnly yes
    ```
-
-<br>
 
 ## SSH passwordless Setup
 
