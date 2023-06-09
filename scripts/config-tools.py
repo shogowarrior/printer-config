@@ -7,8 +7,7 @@ from configparser import ConfigParser
 def get_base_path():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     parent_dir = os.path.dirname(script_dir)
-    os.chdir(parent_dir)
-    return script_dir
+    return parent_dir
 
 
 def get_config(path):
@@ -24,13 +23,22 @@ def update_cfg_file(src_cfg_path, dst_cfg_path):
     cfg_updated = False
     for section in src_cfg.sections():
         for option in src_cfg.options(section):
-            if option.endswith("pin"):
+            if (
+                dst_cfg.has_option(section, option)
+                and option.endswith("pin")
+                and src_cfg[section][option] != dst_cfg[section][option]
+            ):
                 cfg_updated = True
+                print(
+                    f"[{section}][{option}]: {src_cfg[section][option]} -> {dst_cfg[section][option]}"
+                )
                 dst_cfg.set(section, option, src_cfg.get(section, option))
 
-    # with open(dst_cfg_path, 'w') as configfile:
-    #     dst_cfg.write(configfile)
-    return cfg_updated
+    with open(dst_cfg_path, "w") as configfile:
+        dst_cfg.write(configfile)
+
+    if cfg_updated:
+        print(f"updated: {dst_cfg_path}\n ")
 
 
 def update_config(src_cfg_path, dst_cfg_path):
@@ -60,23 +68,19 @@ def update_config(src_cfg_path, dst_cfg_path):
             for file in files:
                 file_path = os.path.join(root, file)
                 if not os.path.islink(file_path) and file.endswith(".cfg"):
-                    if update_cfg_file(src_cfg_path, file_path):
-                        print(f"updated: {dst_cfg_path}")
+                    update_cfg_file(src_cfg_path, file_path)
 
 
 # def compare_
 
 
-# Example usage
-prev_dir = get_dir_change()
-
-
 def main():
-    print("Hello, world!")
-
     base_path = get_base_path()
-    src_cfg_path = base_path + "/config/printers/vzbot/m5p.cfg"
-    dst_cfg_path = base_path + "/config/printers/vzbot/attrs/steppers.cfg"
+    print(base_path)
+    src_cfg_path = base_path + "/config/boards/m5p.cfg"
+    dst_cfg_path = base_path + "/config/printers/vzbot"
+
+    update_config(src_cfg_path, dst_cfg_path)
 
 
 if __name__ == "__main__":
