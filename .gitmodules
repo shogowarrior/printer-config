@@ -1,0 +1,12 @@
+[submodule "config/printers/sr"]
+	path = config/printers/sr
+	url = https://github.com/shogowarrior/sr.git
+[submodule "config/printers/sw"]
+	path = config/printers/sw
+	url = https://github.com/shogowarrior/sw.git
+[submodule "config/printers/voron"]
+	path = config/printers/voron
+	url = https://github.com/shogowarrior/voron.git
+[submodule "config/printers/vzbot"]
+	path = config/printers/vzbot
+	url = https://github.com/shogowarrior/vzbot.git
